@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JobPost;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -13,8 +14,28 @@ class AdminController extends Controller
 
     public function jobstatus()
     {
-        return view('admin.poststatus');
+        return view('admin.poststatus', [
+            'jobposts' => JobPost::all(),
+        ]);
     }
+
+    public function postview(JobPost $jobpost)
+    {
+        return view('admin.poststatus', [
+            'jobpost' => $jobpost,
+        ]);
+    }
+    public function postStatusStore(Request $request)
+    {
+        $jobPost = JobPost::find($request->job_id);
+
+        $jobPost->status = $request->status;
+        $jobPost->save();
+
+        return redirect()->route('approved_page')->with('success', 'Job post has been approved');
+    }
+
+
 
     public function jobseeker()
     {

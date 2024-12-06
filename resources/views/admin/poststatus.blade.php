@@ -205,10 +205,10 @@
                 </a>
                 <div class="collapse" id="auth">
                   <ul class="nav flex-column sub-menu">
-  
+
                     <li class="nav-item"> <a class="nav-link" href="{{route('approved_page')}}"> Approved </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{route('rejected_page')}}"> Rejected </a></li>
-  
+
                   </ul>
                 </div>
               </li>
@@ -271,39 +271,44 @@
               <div class="col-12">
                 <div class="card">
                   <div class="card-body">
-                    <h4 class="card-title">Job Listings</h4>
+                    <h4 class="card-title">Job Listing</h4>
                     <table class="table table-bordered">
                         <thead>
-                          <tr>
-                            <th>ID</th>
-                            <th>Job Title</th>
-                            <th>Company</th>
-                            <th>Action</th>
-                          </tr>
+                            <tr>
+                                <th>ID</th>
+                                <th>Designation</th>
+                                <th>Company</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>Software Developer</td>
-                            <td>ABC Corp</td>
-                            <td>
-                              <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer;">Approve</button>
-                              <button style="background-color: #e70000; color: white; border: none; padding: 5px 10px; cursor: pointer;">Reject</button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td>Graphic Designer</td>
-                            <td>XYZ Designs</td>
-                            <td>
-                              <button style="background-color: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer;">Approve</button>
-                              <button style="background-color: #e70000; color: white; border: none; padding: 5px 10px; cursor: pointer;">Reject</button>
-                            </td>
-                          </tr>
-                          <!-- Add more rows as needed -->
+                            @foreach ($jobposts as $index => $jobpost)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $jobpost->designation }}</td>
+                                <td>{{ $jobpost->company_name }}</td>
+
+                                <form action="{{ route('post.status.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="job_id" value="{{ $jobpost->id }}">
+
+                                    <td>
+                                        <button type="submit" name="status" value="approved"
+                                            style="background-color: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                                            Approve
+                                        </button>
+                                        <button type="submit" name="status" value="rejected"
+                                            style="background-color: #e70000; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                                            Reject
+                                        </button>
+                                    </td>
+                                </form>
+                            </tr>
+                            @endforeach
                         </tbody>
-                      </table>
-                      
+                    </table>
+
+
                   </div>
                 </div>
               </div>
@@ -321,3 +326,8 @@
     <script src="{{asset('assets/js/misc.js')}}"></script>
   </body>
 </html>
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif

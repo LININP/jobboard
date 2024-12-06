@@ -278,7 +278,8 @@
         <div class="col-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-              <form class="forms-sample">
+              <form class="forms-sample" action="{{route('postjobstoring')}}" method="post">
+                @csrf
                 <div class="form-group">
                   <label for="exampleInputName1">Company Name</label>
                   <input type="text" class="form-control" name="company_name" placeholder="Company Name">
